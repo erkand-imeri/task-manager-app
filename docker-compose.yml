@@ -1,0 +1,19 @@
+version: "3"
+
+services:
+  ticket-management-app:
+    container_name: ticket_management_app
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+      target: deps
+    working_dir: /app
+    restart: always
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - ./:/app
+      - ./node_modules:/node_modules
+    ports:
+      - 3001:3001
+    command: npm run dev
