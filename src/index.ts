@@ -2,15 +2,26 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-import express, { Request, Response } from "express";
+import express from "express";
+import { connectDatabase } from "./database/connection";
+import { createRoutes } from "./routes";
+import bodyParser from "body-parser";
 
 const app = express();
 const port = process.env.PORT || 3001;
 
-app.get("/", (req: Request, res: Response) => {
-  res.send("Task Manager App!");
-});
+app.use(bodyParser.json());
 
-app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
-});
+connectDatabase()
+  .then((orm) => {
+
+    app.use('api', createRoutes(orm));
+
+    app.listen(port, () => {
+      console.log(`Server is running on http://localhost:${port}`);
+    });
+  })
+  .catch((error) => {
+    console.error("Failed to connect to the database", error);
+    process.exit(1);
+  });

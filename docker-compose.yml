@@ -1,19 +1,37 @@
 version: "3"
 
 services:
-  ticket-management-app:
-    container_name: ticket_management_app
+  task-manager-app:
+    container_name: task_manager_app
     build:
       context: .
       dockerfile: ./Dockerfile
-      target: deps
+      target: production
     working_dir: /app
     restart: always
     environment:
       - NODE_ENV=development
+      - DATABASE_URL=postgres://task_user:task_password@db:5432/task_manager
     volumes:
       - ./:/app
-      - ./node_modules:/node_modules
+      - /app/node_modules
     ports:
       - 3001:3001
     command: npm run dev
+
+  db:
+    image: postgres:16.4
+    container_name: task_manager_db
+    environment:
+    # Database credentials should not be stored here in production environments.
+    # These are provided directly for convenience in development and testing.
+      - POSTGRES_USER=task_user
+      - POSTGRES_PASSWORD=task_password
+      - POSTGRES_DB=task_manager
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
