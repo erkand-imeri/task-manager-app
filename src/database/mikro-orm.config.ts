@@ -6,7 +6,7 @@ const config: Options = {
   clientUrl: process.env.DATABASE_URL,
   entities: [Task],
   migrations: {
-    path: './src/migrations', // Path to the folder with migration files
+    path: './src/database/migrations',
     glob: '!(*.d).{js,ts}',
   },
   debug: process.env.NODE_ENV !== 'production',

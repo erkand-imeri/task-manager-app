@@ -5,7 +5,8 @@ import { MikroORM } from "@mikro-orm/core";
 const router = Router();
 
 export const taskRoutes = (orm: MikroORM) => {
-  const taskServices = new TaskService(orm.em);
+  const em = orm.em.fork();
+  const taskServices = new TaskService(em);
 
   router.get("/", async (req: Request, res: Response) => {
     const tasks = await taskServices.getAllTasks();
