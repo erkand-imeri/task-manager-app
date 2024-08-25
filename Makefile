@@ -13,9 +13,6 @@ migration-create:
 migrate:
 	docker exec task_manager_app npx mikro-orm migration:up --config=src/database/mikro-orm.config.ts
 
-# Initialize the database (apply migrations after container is up)
-setup_db: migrate
-
 # Start the Docker containers and apply migrations
 run:	
 	docker compose up && $(MAKE) migrate

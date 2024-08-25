@@ -22,4 +22,33 @@ export class TaskService {
 
     return task;
   }
+
+  async updateTask(
+    id: number,
+    title?: string,
+    description?: string,
+    completed?: boolean
+  ): Promise<Task> {
+    const task = await this.taskRepository.findOne({ id });
+
+    if (!task) throw new Error("Task was not found!");
+
+    if (title !== undefined) task.title = title;
+
+    if (description !== undefined) task.description = description;
+
+    if (completed !== undefined) task.completed = completed;
+
+    await this.em.persistAndFlush(task);
+
+    return task;
+  }
+
+  async deleteTask(id: number): Promise<null | void> {
+    const task = await this.taskRepository.findOne({ id });
+
+    if (!task) throw new Error("Task was not found!");
+
+    await this.em.removeAndFlush(task);
+  }
 }
