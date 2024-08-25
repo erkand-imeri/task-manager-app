@@ -48,7 +48,7 @@ export const taskRoutes = (orm: MikroORM) => {
       await taskService.deleteTask(parseInt(id, 10));
       res.status(204).json({ message: `Task with id: ${id} successfully deleted`});
     } catch (error) {
-      res.status(500).json({ message: "Failed to delete task", error });
+      res.status(500).json({ message: "Failed to delete the task", error });
     }
   });
 
